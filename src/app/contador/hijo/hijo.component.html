@@ -1,0 +1,19 @@
+<h2 class="h2">CONTADOR HIJO</h2>
+<h3 class="h3"> {{ contador }} </h3>
+
+<div class="row text-center">
+    <div class="col-md-12">
+        <div class="btn-group">
+            <button class="btn btn-secondary" (click)="this.multiplicar()">Multiplicar</button>
+            <button class="btn btn-primary" (click)="this.dividir()">Dividir</button>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="row text-center">
+    <div class="col-md-12">
+        <app-nieto [contador]="contador" (cambioContador)="cambioContador($event)"></app-nieto>
+    </div>
+</div>

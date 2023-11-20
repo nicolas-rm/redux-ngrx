@@ -1,6 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NietoComponent } from '../nieto/nieto.component';
+import { Store } from '@ngrx/store';
+import { NgRx } from '../interfaces/AppNgRx';
+import { dividir, multiplicar } from '../contador.actions';
 
 @Component({
     selector: 'app-hijo',
@@ -11,29 +14,26 @@ import { NietoComponent } from '../nieto/nieto.component';
 })
 export class HijoComponent {
 
-    /* RECIBE EL VALOR DEL COMPONENTE PADRE */
-    @Input() contador!: number
+    contador!: number
 
-    /* EMITE EL VALOR AL COMPONENTE PADRE: SOLAMENTE SE CAMBIA EN EL COMPONENTE HIJO */
-    @Output() nuevoContador = new EventEmitter<number>()
+    constructor(private Store: Store<NgRx>) {
 
-    constructor() { }
+        /* SUBSCRIPCION AL ESCUCHA DEL VALOR CENTRARL EN CUANTO EXISTA ALGUN CAMBIO */
+        /* Selecciono el nodo especifico y en automatico manda el resultado */
+        this.Store.select('contador').subscribe(contador => this.contador = contador)
+    }
 
     /* EMIT: EJECUTA UN CAMBIO A NIVEL ESCUCHA: TODO LO QUE SE ENCUENTE RELACIONADO */
     multiplicar() {
-        this.contador = this.contador * 2
-        this.nuevoContador.emit(this.contador)
+
+        /* MULTIPLICAR CON LA ACTION */
+        this.Store.dispatch(multiplicar({ numero: 3 }))
     }
 
     /* EMIT: EJECUTA UN CAMBIO A NIVEL ESCUCHA: TODO LO QUE SE ENCUENTE RELACIONADO */
     dividir() {
-        this.contador = this.contador / 2
-        this.nuevoContador.emit(this.contador)
+        /* DIVIDIR CON LA ACTION */
+        this.Store.dispatch(dividir({ numero: 3 }))
     }
 
-    /* EMIT: EJECUTA UN CAMBIO A NIVEL ESCUCHA: TODO LO QUE SE ENCUENTE RELACIONADO */
-    cambioContador(event: any){
-        this.contador = event
-        this.nuevoContador.emit(event)
-    }
 }

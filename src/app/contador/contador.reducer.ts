@@ -3,7 +3,7 @@
 /* DEVUELVE UN NUEVO ESTADO CON FORME A LA ACCION MARCADA */
 
 import { Action, State, createReducer, on } from "@ngrx/store";
-import { decrementar, incrementar } from "./contador.actions";
+import { decrementar, dividir, incrementar, multiplicar, resetear } from "./contador.actions";
 
 /* EL RESULTADO DEL REDUCER SE DEBE DE RESOLVER CON TODA LA INFORMACION QUE RECIBE */
 /* NO ESTA PERMITIDO REALIZAR PETICIONES,NI CAMBIOS DIRECTAMENTE. */
@@ -30,5 +30,10 @@ export const contadorReducer = createReducer(
     initialState,
     on(incrementar, (state: number) => state + 1),
     on(decrementar, (state: number) => state - 1),
-    //   on(reset, (state) => 0)
+
+    /* OPERACIONES CON PARAMETROSS */
+    on(multiplicar, (state: number, props) => state * props.numero),
+    on(dividir, (state: number, props) => state / props.numero),
+
+    on(resetear, (state) => 0)
 );

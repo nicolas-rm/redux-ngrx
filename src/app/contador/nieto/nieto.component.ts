@@ -1,5 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgRx } from '../interfaces/AppNgRx';
+import { Store } from '@ngrx/store';
+import { resetear } from '../contador.actions';
 
 @Component({
     selector: 'app-nieto',
@@ -10,17 +13,15 @@ import { CommonModule } from '@angular/common';
 })
 export class NietoComponent {
 
-    /* RECIBE EL VALOR DEL COMPONENTE PADRE */
-    @Input() contador!: number
+    contador!: number
 
-    /* EMITE EL VALOR AL COMPONENTE PADRE: SOLAMENTE SE CAMBIA EN EL COMPONENTE HIJO */
-    @Output() cambioContador = new EventEmitter<number>()
-
-    constructor() { }
+    constructor(private Store: Store<NgRx>) {
+        this.Store.select('contador').subscribe(contador => this.contador = contador)
+    }
 
     /* EMIT: EJECUTA UN CAMBIO A NIVEL ESCUCHA: TODO LO QUE SE ENCUENTE RELACIONADO */
     resetear() {
-        this.cambioContador.emit(0)
+        this.Store.dispatch(resetear())
     }
 
 }
